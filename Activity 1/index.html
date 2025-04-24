@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Specs</title>
+</head>
+<body>
+
+    <h1> --- FETCH DATA USING ID --- </h1>
+    <label for="userId">Input a ID:</label>
+    <input type="text" id="userId" name="userId">
+    <button onclick="fetchMessage()">ENTER</button>
+    <div id="message"></div>
+
+    <script>
+        function fetchMessage() {
+            fetch('https://kaynbugz.github.io/WebSys-Act1-Finals/specs.json')
+                .then(response => response.json())
+                .then(data => {
+                    let userId = document.getElementById('userId').value.trim(); 
+                    let result = data.find(system => system.id == userId); 
+
+                    if (result) {
+                        document.getElementById('message').innerHTML = `
+                            <p><strong>CPU:</strong> ${result.CPU}</p>
+                            <p><strong>RAM:</strong> ${result.RAM}</p>
+                            <p><strong>Storage:</strong> ${result.STORAGE}</p>
+                            <p><strong>GPU:</strong> ${result.GPU}</p>
+                        `;
+                    } else {
+                        document.getElementById('message').innerText = 'User ID not found';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('message').innerText = 'Error fetching data';
+                    console.error(error);
+                });
+        }
+    </script>
+
+</body>
+</html>
